@@ -1,0 +1,20 @@
+{
+  "name": "sgoranov/dendroid-framework",
+  "license": "BSD",
+  "authors": [
+    {
+      "name": "Simeon Goranov",
+      "email": "sgoranov@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.0.0",
+    "ext-dom": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "sgoranov\\Dendroid\\": "src/"
+    }
+  }
+}
