@@ -45,6 +45,9 @@ class FlashMessenger extends Component
             foreach ($success as $message) {
                 $html .= '<div class="alert alert-success" role="alert">';
                 $html .= $message;
+                $html .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>';
                 $html .= '</div>';
             }
 
