@@ -95,8 +95,8 @@ abstract class Component implements ComponentInterface
 
             if ($isTriggered) {
                 foreach ($this->eventsExecutablesStorage[$eventDefinition->getName()] as $callback) {
-                    // pass the component as parameter to the callback
-                    call_user_func($callback, $this);
+                    $container = Application::getApplication()->getContainer();
+                    $container->call($callback);
                 }
             }
         }

@@ -50,6 +50,8 @@ class Application extends Page
 
         static::$app = $this;
 
+        $this->eventsHandler(['onStart']);
+
         // start the app rendering
         $dom = $this->getDOMFromString($this->getHtml());
 
@@ -71,9 +73,7 @@ class Application extends Page
 
         $body = $result->item(0);
         $body->insertBefore($element);
-
-        $this->eventsHandler(['onStart']);
-
+        
         // handle the events before rendering
         $this->recursiveEventsHandler($this->getComponents());
 
