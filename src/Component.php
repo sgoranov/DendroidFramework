@@ -3,7 +3,7 @@ namespace sgoranov\Dendroid;
 
 use sgoranov\Dendroid\Component\Application;
 
-abstract class Component
+abstract class Component implements ComponentInterface
 {
     const DEFAULT_EVENT_VALUE = 'spf-default-event';
 

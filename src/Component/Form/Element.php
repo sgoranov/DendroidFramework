@@ -5,7 +5,7 @@ use sgoranov\Dendroid\Component;
 use sgoranov\Dendroid\Component\Form as Form;
 use sgoranov\Dendroid\EventDefinition;
 
-abstract class Element extends Component
+abstract class Element extends Component implements ElementInterface
 {
     /** @var  Form */
     protected $form;

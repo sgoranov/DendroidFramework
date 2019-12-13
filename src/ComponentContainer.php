@@ -159,7 +159,7 @@ abstract class ComponentContainer extends Component implements ComponentContaine
         return $dom;
     }
 
-    public function addComponent(string $ref, Component $component)
+    public function addComponent(string $ref, ComponentInterface $component)
     {
         $this->components[$ref] = $component;
     }

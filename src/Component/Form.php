@@ -3,7 +3,9 @@ namespace sgoranov\Dendroid\Component;
 
 use sgoranov\Dendroid\ComponentContainer;
 use sgoranov\Dendroid\Component;
+use sgoranov\Dendroid\Component\Form\ElementInterface;
 use sgoranov\Dendroid\Component\Form\Element;
+use sgoranov\Dendroid\ComponentInterface;
 use sgoranov\Dendroid\EventDefinition;
 
 class Form extends ComponentContainer
@@ -27,10 +29,10 @@ class Form extends ComponentContainer
         $this->csrfEnabled = $csrfEnabled;
     }
 
-    public function addComponent($ref, Component $component)
+    public function addComponent($ref, ComponentInterface $component)
     {
         /** @var Element $component */
-        if (!$component instanceof Element) {
+        if (!$component instanceof ElementInterface) {
             throw new \InvalidArgumentException('Invalid component passed');
         }
 
@@ -153,11 +155,27 @@ class Form extends ComponentContainer
         foreach ($this->getComponents() as $component) {
             $name = $component->getName();
 
-            if ($this->method === 'get') {
-                $result[$name] = $_GET[$name];
+            $data = null;
+
+            // check GET or POST and then FILES
+            if ($this->method === 'get' && isset($_GET[$name])) {
+
+                $data = $_GET[$name];
+            } elseif (isset($_POST[$name])) {
+
+                $data = $_POST[$name];
+            } elseif (isset($_FILES[$name])) {
+
+                $data = $_FILES[$name];
             } else {
-                $result[$name] = $_POST[$name];
+
+                // throw exception if data is not found
+                throw new \InvalidArgumentException(sprintf(
+                    'Unable to find the data for %s element. The form may contains a file 
+                    element but enctype="multipart/form-data" attribute is missing', $name));
             }
+
+            $result[$name] = $data;
         }
 
         return $result;
