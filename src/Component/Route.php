@@ -43,7 +43,8 @@ class Route extends Component implements ComponentContainerInterface
             }
         }
 
-        throw new \InvalidArgumentException('The route definition is not found');
+        throw new \InvalidArgumentException(
+            sprintf("The route definition (%s) is not found or number of parameters doesn't match", $page));
     }
 
     public function getRoutes()
