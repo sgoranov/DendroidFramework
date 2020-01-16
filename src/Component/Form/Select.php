@@ -28,7 +28,7 @@ class Select extends Element
 
         foreach ($this->options as $value => $option) {
 
-            $optionElement = $dom->createElement('option', $option);
+            $optionElement = $dom->createElement('option', htmlspecialchars($option));
             $optionElement->setAttribute('value', $value);
 
             if (!is_null($currentValue) && $currentValue == $value) {
