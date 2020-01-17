@@ -5,11 +5,16 @@ use sgoranov\Dendroid\Component;
 
 class Pagination extends Component
 {
+    const PAGE_RANGE = 3;
+
     private $url;
     private $totalNumberOfItems;
     private $totalNumberOfPages;
     private $currentPage;
     private $itemsPerPage;
+
+    private $previousLabel = 'Previous';
+    private $nextLabel = 'Next';
 
     public function __construct(string $url, int $currentPage, int $totalNumberOfItems, int $itemsPerPage = 10)
     {
@@ -22,6 +27,12 @@ class Pagination extends Component
         $this->currentPage = $currentPage;
         $this->itemsPerPage = $itemsPerPage;
         $this->totalNumberOfPages = (int)ceil($this->totalNumberOfItems / $this->itemsPerPage);
+    }
+
+    public function setPaginationLabels(string $previous, string $next)
+    {
+        $this->previousLabel = $previous;
+        $this->nextLabel = $next;
     }
 
     public function getOffset()
@@ -40,11 +51,16 @@ class Pagination extends Component
             <nav aria-label=\"...\">
                 <ul class=\"pagination\">
                     <li class=\"page-item $disabledPrevious \">
-                        <a class=\"page-link\" href=\"" . str_replace('{PAGE}', $this->currentPage - 1, $this->url) . "\" tabindex=\"-1\">Previous</a>
+                        <a class=\"page-link\" href=\"" . str_replace('{PAGE}', $this->currentPage - 1, $this->url) . "\" tabindex=\"-1\">{$this->previousLabel}</a>
                     </li>      
         ";
 
         for ($page = 1; $page <= $this->totalNumberOfPages; $page++) {
+
+            if ($page + self::PAGE_RANGE < $this->currentPage || $this->currentPage + self::PAGE_RANGE < $page) {
+                continue;
+            }
+
             $isActive = '';
             if ($this->currentPage === $page) {
                 $isActive = 'active';
@@ -64,7 +80,7 @@ class Pagination extends Component
 
         $html .= "
                     <li class=\"page-item $nextDisabled\">
-                        <a class=\"page-link\" href=\"" . str_replace('{PAGE}', $this->currentPage + 1, $this->url) . "\">Next</a>
+                        <a class=\"page-link\" href=\"" . str_replace('{PAGE}', $this->currentPage + 1, $this->url) . "\">{$this->nextLabel}</a>
                     </li>
                 </ul>
             </nav>
