@@ -4,9 +4,7 @@ namespace sgoranov\Dendroid\Component\Form;
 class Input extends Element
 {
     protected $type = 'text';
-
-    protected array $attributes = [];
-
+    
     public function setMin(\DateTime $date = null)
     {
         if ($this->type !== 'date') {

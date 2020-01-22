@@ -13,6 +13,7 @@ abstract class Element extends Component implements ElementInterface
     protected $data = '';
     protected $errors = [];
     protected $validator;
+    protected $attributes = [];
 
     public function __construct(string $name)
     {
@@ -73,5 +74,23 @@ abstract class Element extends Component implements ElementInterface
         }
 
         return false;
+    }
+
+    public function setDisabled(bool $value)
+    {
+        if ($value) {
+            $this->attributes['disabled'] = 'disabled';
+        } else {
+            unset($this->attributes['disabled']);
+        }
+    }
+
+    public function setReadOnly(bool $value)
+    {
+        if ($value) {
+            $this->attributes['readonly'] = 'readonly';
+        } else {
+            unset($this->attributes['readonly']);
+        }
     }
 }

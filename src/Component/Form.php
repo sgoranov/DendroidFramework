@@ -169,6 +169,11 @@ class Form extends ComponentContainer
                 $data = $_FILES[$name];
             } else {
 
+                // skip buttons
+                if ($component instanceof Component\Form\Button) {
+                    continue;
+                }
+
                 // throw exception if data is not found
                 throw new \InvalidArgumentException(sprintf(
                     'Unable to find the data for %s element. The form may contains a file 
@@ -179,6 +184,20 @@ class Form extends ComponentContainer
         }
 
         return $result;
+    }
+
+    public function getElementByName($name)
+    {
+        /** @var Element $component */
+        foreach ($this->getComponents() as $component) {
+
+            if ($component->getName() === $name) {
+
+                return $component;
+            }
+        }
+
+        throw new \InvalidArgumentException(sprintf('Unable to find an element with name %s', $name));
     }
 
     protected function getCSRFToken()

@@ -164,6 +164,15 @@ abstract class ComponentContainer extends Component implements ComponentContaine
         $this->components[$ref] = $component;
     }
 
+    public function getComponent($ref): array
+    {
+        if (!isset($this->components[$ref])) {
+            throw new \InvalidArgumentException(sprintf('Component with ref %s is not found', $ref));
+        }
+
+        return $this->components[$ref];
+    }
+
     public function getComponents(): array
     {
         return $this->components;
