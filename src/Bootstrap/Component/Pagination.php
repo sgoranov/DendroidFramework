@@ -5,7 +5,7 @@ use sgoranov\Dendroid\Component;
 
 class Pagination extends Component
 {
-    const PAGE_RANGE = 3;
+    const PAGE_RANGE = 2;
 
     private $url;
     private $totalNumberOfItems;
@@ -57,8 +57,29 @@ class Pagination extends Component
 
         for ($page = 1; $page <= $this->totalNumberOfPages; $page++) {
 
-            if ($page + self::PAGE_RANGE < $this->currentPage || $this->currentPage + self::PAGE_RANGE < $page) {
-                continue;
+            $append = $preppend = '';
+
+            if ($page + self::PAGE_RANGE < $this->currentPage) {
+                if ($page !== 1) {
+                    continue;
+                }
+
+                // print dots after
+                $preppend = "
+                    <li class=\"page-item disabled\"> .. </li>
+                ";
+            }
+
+            if ($this->currentPage + self::PAGE_RANGE < $page) {
+
+                if ($page !== $this->totalNumberOfPages) {
+                    continue;
+                }
+
+                // print dots before
+                $append = "
+                    <li class=\"page-item disabled\"> .. </li>
+                ";
             }
 
             $isActive = '';
@@ -66,11 +87,11 @@ class Pagination extends Component
                 $isActive = 'active';
             }
 
-            $html .= "
+            $html .= $append . "
                 <li class=\"page-item $isActive\">
                     <a class=\"page-link\" href=\"" . str_replace('{PAGE}', $page, $this->url) . "\">$page</a>
                 </li>
-            ";
+            " . $preppend;
         }
 
         $nextDisabled = '';
