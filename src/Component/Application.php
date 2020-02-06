@@ -1,9 +1,9 @@
 <?php
 namespace sgoranov\Dendroid\Component;
 
-use DI\Container;
 use sgoranov\Dendroid\Component;
 use sgoranov\Dendroid\ComponentContainerInterface;
+use sgoranov\Dendroid\DependencyInjection\ContainerInterface;
 use sgoranov\Dendroid\EventDefinition;
 
 class Application extends Page
@@ -13,7 +13,7 @@ class Application extends Page
 
     protected $container;
 
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct();
 
@@ -25,7 +25,7 @@ class Application extends Page
             return true;
         }));
 
-        $this->container = new Container();
+        $this->container = $container;
     }
 
     public static function getApplication()
