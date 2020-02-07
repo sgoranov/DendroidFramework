@@ -10,13 +10,14 @@ class Textarea extends Element
         }
 
         // overwrite the name of the form field
-        $node->setAttribute('name', $this->name);
+        $node->setAttribute('name', $this->getNameDefinition());
 
-        if ($this->form->isSubmitted()) { // set submitted value
-            $node->textContent = $this->getData();
-        } elseif ($this->data !== '') { // set the predefined value before submission
-            $node->textContent = $this->data;
+        // set all additional attributes
+        foreach ($this->attributes as $key => $value) {
+            $node->setAttribute($key, $value);
         }
+
+        $node->textContent = $this->getDataToRender();
 
         return $node;
     }

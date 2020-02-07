@@ -61,18 +61,14 @@ class Input extends Element
         }
 
         // overwrite the name of the form field
-        $node->setAttribute('name', $this->name);
+        $node->setAttribute('name', $this->getNameDefinition());
 
         // set all additional attributes
         foreach ($this->attributes as $key => $value) {
             $node->setAttribute($key, $value);
         }
 
-        if ($this->form->isSubmitted()) { // set submitted value
-            $node->setAttribute('value', $this->getData());
-        } elseif ($this->data !== '') { // set the predefined value before submission
-            $node->setAttribute('value', $this->data);
-        }
+        $node->setAttribute('value', $this->getDataToRender());
 
         // set type of the input, type="text" by default
         $node->setAttribute('type', $this->type);

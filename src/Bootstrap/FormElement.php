@@ -63,9 +63,7 @@ class FormElement implements ElementInterface
             $element = $dom->createElement('input');
             $class = ['form-control'];
         }
-
-        $element->setAttribute('id', $this->element->getName());
-
+        
         if (count($this->getErrors()) > 0) {
             $class[] = 'is-invalid';
         }
@@ -109,7 +107,7 @@ class FormElement implements ElementInterface
         return $this->element->getName();
     }
 
-    public function setData(string $data)
+    public function setData($data)
     {
         return $this->element->setData($data);
     }

@@ -56,10 +56,6 @@ abstract class ComponentContainer extends Component implements ComponentContaine
         foreach ($nodes as $node) {
             $reference = $node->getAttribute('spf');
 
-            if (in_array($reference, $spfNodes)) {
-                throw new \InvalidArgumentException("The node with '$reference' reference is already defined.");
-            }
-
             if (!array_key_exists($reference, $this->components)) {
                 throw new \InvalidArgumentException("The node with '$reference' reference has no matching component.");
             }

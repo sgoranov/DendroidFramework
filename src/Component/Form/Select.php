@@ -19,12 +19,14 @@ class Select extends Element
         $dom = $node->ownerDocument;
 
         // overwrite the name of the form field
-        $node->setAttribute('name', $this->getName());
+        $node->setAttribute('name', $this->getNameDefinition());
 
-        $currentValue = $this->data;
-        if ($this->getForm()->isSubmitted()) {
-            $currentValue = $this->getData();
+        // set all additional attributes
+        foreach ($this->attributes as $key => $value) {
+            $node->setAttribute($key, $value);
         }
+
+        $currentValue = $this->getDataToRender();
 
         foreach ($this->options as $value => $option) {
 
@@ -37,9 +39,7 @@ class Select extends Element
 
             $node->appendChild($optionElement);
         }
-
-        $node->setAttribute('id', $this->name);
-
+        
         return $node;
     }
 }

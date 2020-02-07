@@ -19,7 +19,14 @@ class File extends Element
             throw new \InvalidArgumentException('DOMElement expected');
         }
 
-        $node->setAttribute('name', $this->name);
+        // overwrite the name of the form field
+        $node->setAttribute('name', $this->getNameDefinition());
+
+        // set all additional attributes
+        foreach ($this->attributes as $key => $value) {
+            $node->setAttribute($key, $value);
+        }
+
         $node->setAttribute('type', 'file');
 
         return $node;

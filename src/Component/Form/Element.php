@@ -34,17 +34,32 @@ abstract class Element extends Component implements ElementInterface
 
     public function getName()
     {
+        // handle multiple values presented as array
+        if ($this->isMultiValueElement()) {
+            return str_replace('[]', '', $this->name);
+        }
+
         return $this->name;
     }
 
-    public function setData(string $data)
+    public function setData($data)
     {
+        if ($this->isMultiValueElement()) {
+            if (!is_array($data)) {
+                throw new \InvalidArgumentException('Invalid data passed - array expected');
+            }
+        }
+
         $this->data = $data;
     }
 
     public function getData()
     {
-        return $this->form->getData()[$this->name];
+        if ($this->form->isSubmitted()) {
+            return $this->form->getData()[$this->getName()];
+        }
+
+        return $this->data;
     }
 
     public function setForm(Form $form)
@@ -76,6 +91,11 @@ abstract class Element extends Component implements ElementInterface
         return false;
     }
 
+    public function setId(string $id)
+    {
+        $this->attributes['id'] = $id;
+    }
+
     public function setDisabled(bool $value)
     {
         if ($value) {
@@ -91,6 +111,32 @@ abstract class Element extends Component implements ElementInterface
             $this->attributes['readonly'] = 'readonly';
         } else {
             unset($this->attributes['readonly']);
+        }
+    }
+
+    protected function isMultiValueElement()
+    {
+        return substr($this->getNameDefinition(), -2) === '[]';
+    }
+
+    protected function getNameDefinition()
+    {
+        return $this->name;
+    }
+
+    protected function getDataToRender()
+    {
+        if ($this->isMultiValueElement()) {
+
+            $data = $this->getData();
+            $response = array_shift($data);
+            $this->setData($data);
+
+            return $response;
+
+        } else {
+
+            return $this->getData();
         }
     }
 }
