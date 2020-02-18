@@ -10,7 +10,10 @@ abstract class Element extends Component implements ElementInterface
     /** @var  Form */
     protected $form;
     protected $name;
+
     protected $data = '';
+    protected $submittedData;
+
     protected $errors = [];
     protected $validator;
     protected $attributes = [];
@@ -50,13 +53,22 @@ abstract class Element extends Component implements ElementInterface
             }
         }
 
-        $this->data = $data;
+        if ($this->form && $this->form->isSubmitted()) {
+            $this->submittedData = $data;
+        } else {
+            $this->data = $data;
+        }
     }
 
     public function getData()
     {
-        if ($this->form->isSubmitted()) {
-            return $this->form->getData()[$this->getName()];
+        if ($this->form && $this->form->isSubmitted()) {
+
+            if (is_null($this->submittedData)) {
+                $this->submittedData = $this->form->getData()[$this->getName()];
+            }
+
+            return $this->submittedData;
         }
 
         return $this->data;
