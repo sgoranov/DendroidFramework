@@ -8,8 +8,11 @@
     }
   ],
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.4.0",
     "ext-dom": "*"
+  },
+  "suggest": {
+    "php-di/php-di": "To use PHP-DI dependency injection"
   },
   "autoload": {
     "psr-4": {
