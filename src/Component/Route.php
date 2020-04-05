@@ -11,6 +11,15 @@ class Route extends Component implements ComponentContainerInterface
 
     public function addPage(Page $page, string $path)
     {
+        if (in_array($page, $this->routes)) {
+
+            throw new \InvalidArgumentException(sprintf(
+                'There is existing route definition "%s" for %s',
+                array_search($page, $this->routes),
+                get_class($page))
+            );
+        }
+
         $this->routes[$path] = $page;
     }
 
