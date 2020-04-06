@@ -9,6 +9,11 @@ class Route extends Component implements ComponentContainerInterface
     protected $pathPrefix;
     protected $routes = [];
 
+    public function addRoutedComponent(RoutedComponent $component)
+    {
+        $this->addPage($component, $component->getRoutePath());
+    }
+
     public function addPage(Page $page, string $path)
     {
         if (in_array($page, $this->routes)) {
