@@ -11,6 +11,10 @@ class Page extends ComponentContainer
 
     public function __construct()
     {
+        $this->addEventDefinition(new EventDefinition('onInit', function () {
+            return true;
+        }));
+
         $this->addEventDefinition(new EventDefinition('onLoad', function () {
             return true;
         }));
