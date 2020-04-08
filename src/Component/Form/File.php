@@ -3,7 +3,7 @@ namespace sgoranov\Dendroid\Component\Form;
 
 class File extends Element
 {
-    public function setData(string $data)
+    public function setData($data)
     {
         throw new \Exception('Operation not supported');
     }

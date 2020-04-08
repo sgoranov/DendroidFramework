@@ -7,14 +7,24 @@ use sgoranov\Dendroid\EventDefinition;
 
 class FlashMessenger extends Component
 {
+    private $types = ['success', 'error'];
+
+    private $classMappings = [
+        'success' => 'alert-success',
+        'error' => 'alert-danger',
+    ];
+
     public function __construct()
     {
-        if (!isset($_SESSION['flash_messages']['success'])) {
-            $_SESSION['flash_messages']['success'] = [];
-        }
+        // init session variables
+        foreach ($this->types as $type) {
+            if (!isset($_SESSION['flash_messages'][$type])) {
+                $_SESSION['flash_messages'][$type] = [];
+            }
 
-        if (!isset($_SESSION['new_flash_messages']['success'])) {
-            $_SESSION['new_flash_messages']['success'] = [];
+            if (!isset($_SESSION['new_flash_messages'][$type])) {
+                $_SESSION['new_flash_messages'][$type] = [];
+            }
         }
 
         $this->addEventDefinition(new EventDefinition('initOnShutDown', function () {
@@ -25,8 +35,14 @@ class FlashMessenger extends Component
     public function initOnShutDown() {
         $app = Application::getApplication();
         $app->attach('onShutDown', function () {
-            $_SESSION['flash_messages']['success'] = $_SESSION['new_flash_messages']['success'];
-            $_SESSION['new_flash_messages']['success'] = [];
+
+            // move "new" to "current" and reset the "new" container
+            foreach ($this->types as $type) {
+
+                $_SESSION['flash_messages'][$type] = $_SESSION['new_flash_messages'][$type];
+                $_SESSION['new_flash_messages'][$type] = [];
+
+            }
         });
     }
 
@@ -35,21 +51,43 @@ class FlashMessenger extends Component
         $_SESSION['new_flash_messages']['success'][] = $message;
     }
 
+    public function addError(string $message)
+    {
+        $_SESSION['new_flash_messages']['error'][] = $message;
+    }
+
     public function render(\DOMNode $node): \DOMNode
     {
-        $success = $_SESSION['flash_messages']['success'];
+        $html = '';
 
-        // print the messages
-        if (!empty($success)) {
-            $html = '';
-            foreach ($success as $message) {
-                $html .= '<div class="alert alert-success" role="alert">';
-                $html .= $message;
-                $html .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>';
-                $html .= '</div>';
+        foreach ($this->types as $type) {
+
+            $messages = $_SESSION['flash_messages'][$type];
+
+            if (!empty($messages)) {
+
+                $class = $this->classMappings[$type];
+
+                foreach ($messages as $message) {
+
+$html .= <<<EOF
+
+<div class="alert $class" role="alert">
+    $message
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+EOF;
+                }
             }
+
+        }
+
+        if (!empty($html)) {
+
+            $html = "<div>$html</div>";
 
             $newNode = $this->getDOMElementFromString($node->ownerDocument, $html);
             $node->appendChild($newNode);
