@@ -3,6 +3,7 @@ namespace sgoranov\Dendroid\Component;
 
 use sgoranov\Dendroid\Component;
 use sgoranov\Dendroid\ComponentContainerInterface;
+use sgoranov\Dendroid\Component\Exception\RouteNotFoundException;
 
 class Route extends Component implements ComponentContainerInterface
 {
@@ -93,7 +94,7 @@ class Route extends Component implements ComponentContainerInterface
             }
         }
 
-        throw new \InvalidArgumentException('The route definition does not exists');
+        throw new RouteNotFoundException('The route definition does not exists');
     }
 
     public function render(\DOMNode $node): \DOMNode
