@@ -78,7 +78,8 @@ class Route extends Component implements ComponentContainerInterface
     public function getPageByRoute(string $uri = null)
     {
         if (is_null($uri)) {
-            $uri = $_SERVER['REQUEST_URI'];
+
+            $uri = parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH);
         }
 
         /**
