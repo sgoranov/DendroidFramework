@@ -128,25 +128,14 @@ abstract class ComponentContainer extends Component implements ComponentContaine
         $this->template = $path;
     }
 
-    protected function getDOMFromFile($path)
-    {
-        $content = file_get_contents($path);
-        if ($content === false) {
-            throw new \InvalidArgumentException("Path not found: $path");
-        }
-
-        $dom = new \DOMDocument();
-        $dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
-
-        return $dom;
-    }
-
     protected function getDOMFromString($content)
     {
         $dom = new \DOMDocument();
 
         // disable HTML errors/warnings
-        $isLoaded = @$dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+        // and get the HTML even when there is no wrapper
+        // https://stackoverflow.com/questions/4879946/how-to-savehtml-of-domdocument-without-html-wrapper
+        $isLoaded = @$dom->loadHTML('<html>' . mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8') . '</html>');
 
         if (!$isLoaded) {
             throw new \InvalidArgumentException("Unable to load the HTML");

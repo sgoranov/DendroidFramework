@@ -42,6 +42,19 @@ class Application extends Page
         return $this->container;
     }
 
+    protected function getDOMFromString($content)
+    {
+        $dom = new \DOMDocument();
+
+        $isLoaded = @$dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'));
+
+        if (!$isLoaded) {
+            throw new \InvalidArgumentException("Unable to load the HTML");
+        }
+
+        return $dom;
+    }
+
     public function start()
     {
         if (!is_null(static::$app)) {
