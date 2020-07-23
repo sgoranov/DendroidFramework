@@ -202,7 +202,11 @@ class Form extends ComponentContainer
 
     protected function getCSRFToken()
     {
-        return $_SESSION['form_' . $this->getId()]['csrf_token'];
+        if (isset($_SESSION['form_' . $this->getId()]['csrf_token'])) {
+            return $_SESSION['form_' . $this->getId()]['csrf_token'];
+        }
+
+        return '';
     }
 
     protected function generateCSRFToken()
