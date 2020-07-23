@@ -37,7 +37,7 @@ class Route extends Component implements ComponentContainerInterface
     public function createUrl(string $page, array $parameters = [])
     {
         foreach ($this->routes as $route => $pageObject) {
-            if ($pageObject instanceof $page) {
+            if (get_class($pageObject) === $page) {
 
                 $result = preg_replace("/\([^)]+\)/",
                     "%s",
