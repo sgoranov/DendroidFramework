@@ -54,14 +54,18 @@ class Input extends Element
         $this->type = $type;
     }
 
-    public function render(\DOMNode $node): \DOMNode
+    public function render(\DOMNode $node, string $name = null): \DOMNode
     {
         if (!$node instanceof \DOMElement) {
             throw new \InvalidArgumentException('DOMElement expected');
         }
 
+        if (is_null($name)) {
+            $name = $this->getName();
+        }
+
         // overwrite the name of the form field
-        $node->setAttribute('name', $this->getNameDefinition());
+        $node->setAttribute('name', $name);
 
         // set all additional attributes
         foreach ($this->attributes as $key => $value) {

@@ -39,7 +39,7 @@ class Button extends Element
         }
 
         // overwrite the name of the form field
-        $node->setAttribute('name', $this->getNameDefinition());
+        $node->setAttribute('name', $this->getName());
 
         // set all additional attributes
         foreach ($this->attributes as $key => $value) {

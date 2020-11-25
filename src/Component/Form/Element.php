@@ -37,22 +37,11 @@ abstract class Element extends Component implements ElementInterface
 
     public function getName()
     {
-        // handle multiple values presented as array
-        if ($this->isMultiValueElement()) {
-            return str_replace('[]', '', $this->name);
-        }
-
         return $this->name;
     }
 
     public function setData($data)
     {
-        if ($this->isMultiValueElement()) {
-            if (!is_array($data)) {
-                throw new \InvalidArgumentException('Invalid data passed - array expected');
-            }
-        }
-
         if ($this->form && $this->form->isSubmitted()) {
             $this->submittedData = $data;
         } else {
@@ -126,29 +115,8 @@ abstract class Element extends Component implements ElementInterface
         }
     }
 
-    protected function isMultiValueElement()
-    {
-        return substr($this->getNameDefinition(), -2) === '[]';
-    }
-
-    protected function getNameDefinition()
-    {
-        return $this->name;
-    }
-
     protected function getDataToRender()
     {
-        if ($this->isMultiValueElement()) {
-
-            $data = $this->getData();
-            $response = array_shift($data);
-            $this->setData($data);
-
-            return $response;
-
-        } else {
-
-            return $this->getData();
-        }
+        return $this->getData();
     }
 }
