@@ -33,7 +33,7 @@ class Select extends Element
             $optionElement = $dom->createElement('option', htmlspecialchars($option));
             $optionElement->setAttribute('value', $value);
 
-            if (!is_null($currentValue) && $currentValue == $value) {
+            if (!is_null($currentValue) && $currentValue == (string) $value) {
                 $optionElement->setAttribute('selected', 'selected');
             }
 
